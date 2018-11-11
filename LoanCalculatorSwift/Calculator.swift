@@ -25,9 +25,6 @@ final class Calculator{
 
     static let sharedInstance = Calculator()
 
-    func add (a : Double, b : Double) -> Double {
-        return a*b
-    }
 
     func calPayment (fullAmount: Double, interest: Double, month: Int) -> (Double, [BreakDown]) {
         let monthlyInterest: Double = interest/12/100

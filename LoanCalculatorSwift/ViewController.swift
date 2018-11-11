@@ -61,6 +61,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         _monthlyBreakDownArray = results.1
         tblView.reloadData()
+        RealTotal.text = ""
+        interest.text = ""
+        termMonth.text = ""
+       
 
     }
 
