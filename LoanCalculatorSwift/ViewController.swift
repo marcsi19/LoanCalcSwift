@@ -5,7 +5,7 @@
 //  Created by Mariann on 11/4/18.
 //  Copyright © 2018 Mariann. All rights reserved.
 //
-
+import Foundation
 import UIKit
 
 let formatter = NumberFormatter()
@@ -21,6 +21,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentCell", for: indexPath)
+            as! PaymentViewCell
+        
+        let payment = _monthlyBreakDownArray[indexPath.row]
+        cell.lblMonth?.text = String(payment.month)
+        cell.lblMonthlyPayment?.text = String(format: "%.2f", payment.totalMonthlyPayment)
+        cell.lblInterest?.text = String(format: "%.2f", payment.interest)
+        cell.lblPrincipal?.text = String(format: "%.2f", payment.principal)
+        cell.lblBalance?.text = String(format: "%.2f", payment.remainingBalance)
+        return cell
     }
 
     @IBOutlet weak var RealTotal: UITextField!
@@ -57,4 +67,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
 }
 
+class PaymentViewCell: UITableViewCell{
+    
+    @IBOutlet weak var lblMonth: UILabel!
+    @IBOutlet weak var lblMonthlyPayment: UILabel!
+    @IBOutlet weak var lblInterest: UILabel!
+    @IBOutlet weak var lblPrincipal: UILabel!
+    @IBOutlet weak var lblBalance: UILabel!
+}
 
