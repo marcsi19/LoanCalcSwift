@@ -14,11 +14,17 @@ var fullAmountToSave: Double = 1
 var monthTermToSave: Int = 1
 var monthlyPaymentToSave: Double = 1
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var _monthlyBreakDownArray: [Calculator.BreakDown] = []
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return _monthlyBreakDownArray.count
     }
+    
+//    func formatField() {
+//        guard let totals = Double(RealTotal.text!) else {
+//            print("Total amount is not a number")
+//        }
+//    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentCell", for: indexPath)
@@ -44,7 +50,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
         tblView.delegate = self
         tblView.dataSource = self
+        RealTotal.delegate = self
+        interest.delegate = self
+        termMonth.delegate = self
+        
+       
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
 
 
     @IBAction func LoanTotal(_ sender: Any) {
