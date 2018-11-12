@@ -20,11 +20,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return _monthlyBreakDownArray.count
     }
     
-//    func formatField() {
-//        guard let totals = Double(RealTotal.text!) else {
-//            print("Total amount is not a number")
-//        }
-//    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentCell", for: indexPath)
@@ -32,10 +27,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let payment = _monthlyBreakDownArray[indexPath.row]
         cell.lblMonth?.text = String(payment.month)
-        cell.lblMonthlyPayment?.text = String(format: "%.2f", payment.totalMonthlyPayment)
-        cell.lblInterest?.text = String(format: "%.2f", payment.interest)
-        cell.lblPrincipal?.text = String(format: "%.2f", payment.principal)
-        cell.lblBalance?.text = String(format: "%.2f", payment.remainingBalance)
+        cell.lblMonthlyPayment?.text = convertDoubleToCurrency(amount: payment.totalMonthlyPayment)
+        cell.lblInterest?.text = convertDoubleToCurrency(amount: payment.interest)
+        //cell.lblInterest?.text = String(format: "%.2f", payment.interest)
+        cell.lblPrincipal?.text = convertDoubleToCurrency(amount: payment.principal)
+        cell.lblBalance?.text = convertDoubleToCurrency(amount: payment.remainingBalance)
         return cell
     }
 
@@ -63,8 +59,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         textField.resignFirstResponder()
         return true
     }
+    func convertDoubleToCurrency(amount: Double) -> String{
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale.current
+        
+        return numberFormatter.string(from: NSNumber(value: amount))!
+    }
     
-
 
     @IBAction func LoanTotal(_ sender: Any) {
         let totalLoan = RealTotal.text == "" ? 1 : Double(RealTotal.text!)!
@@ -75,8 +77,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         fullAmountToSave = totalLoan
         monthTermToSave = totalTerm
         monthlyPaymentToSave = results.0
-
-        monthlyPay.text = String(Double(round(100*results.0)/100))
+        monthlyPay.text = convertDoubleToCurrency(amount: results.0)
+        //monthlyPay.text = String(Double(round(100*results.0)/100))
 
         _monthlyBreakDownArray = results.1
         tblView.reloadData()
